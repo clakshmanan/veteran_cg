@@ -110,28 +110,6 @@ veteran_project/
 6. **UserState** - User-state mapping
 7. **Message** - System announcements
 
-### VeteranMember Fields
-- `association_id` (Primary Key)
-- `state` (ForeignKey to State)
-- `enrolled_date` (Date)
-- `name` (CharField)
-- `rank` (ForeignKey to Rank)
-- `group` (ForeignKey to Group)
-- `p_number` (CharField, unique)
-- `date_of_birth` (Date)
-- `blood_group` (ForeignKey to BloodGroup)
-- `contact` (CharField with regex validation)
-- `address` (TextField)
-- `date_of_joining` (Date)
-- `retired_on` (Date)
-- `association_date` (Date)
-- `membership` (BooleanField)
-- `subscription_paid_on` (Date, optional)
-- `document` (FileField, optional)
-- `created_by` (ForeignKey to User)
-- `approved` (BooleanField)
-- `created_at` (DateTimeField)
-- `updated_at` (DateTimeField)
 
 ## 🔧 Key Features
 
@@ -199,36 +177,6 @@ veteran_project/
   - PaymentOrder
   - PaymentWebhook
 - Events module now fully functional
-
-**Status:** ✅ RESOLVED
-
-## 🎯 Usage Instructions
-
-### For Administrators
-1. Login with admin credentials
-2. Navigate to Services page
-3. Select any state to view members
-4. Use "Add Member" to create new records
-5. Approve pending members
-6. Download CSV reports
-
-### For State Users
-1. Login with state-specific credentials (e.g., `state_AP` for Andhra Pradesh)
-2. Can only access their assigned state
-3. Can add/edit members for their state only
-4. Cannot approve members (admin privilege)
-
-## 🔍 Testing
-
-The application has been tested and verified to work correctly:
-
-1. ✅ Form validation passes
-2. ✅ Member creation works
-3. ✅ Member editing works
-4. ✅ Database operations successful
-5. ✅ File uploads supported
-6. ✅ State-based access control working
-
 ## 📝 Management Commands
 
 ### Seed Master Data
@@ -249,19 +197,6 @@ python manage.py seed_members
 ```
 Creates sample member records for testing.
 
-## 🌐 URLs
-
-- `/` - Login page
-- `/index/` - Dashboard
-- `/services/` - State selection
-- `/state/<id>/` - State members list
-- `/state/<id>/add/` - Add new member
-- `/member/<id>/edit/` - Edit member
-- `/member/<id>/delete/` - Delete member
-- `/member/<id>/approve/` - Approve member (Admin only)
-- `/state/<id>/download/` - Download CSV report
-- `/admin/` - Django admin interface
-
 ## 🔒 Security Features
 
 - CSRF protection enabled
@@ -270,17 +205,6 @@ Creates sample member records for testing.
 - File upload validation
 - Input sanitization
 - SQL injection protection (Django ORM)
-
-## 📊 Database Schema
-
-The application uses SQLite database with the following key relationships:
-- VeteranMember → State (Many-to-One)
-- VeteranMember → Rank (Many-to-One)
-- VeteranMember → Group (Many-to-One)
-- VeteranMember → BloodGroup (Many-to-One)
-- VeteranMember → User (Many-to-One)
-- UserState → User (One-to-One)
-- UserState → State (Many-to-One)
 
 ## 🚀 Deployment Notes
 
@@ -325,14 +249,6 @@ python manage.py createsuperuser
 # 6. Start with Gunicorn
 gunicorn veteran_project.wsgi:application --bind 0.0.0.0:8000 --workers 3
 ```
-
-### Production Documentation:
-- 📋 `PRODUCTION_CHECKLIST.md` - Complete deployment guide
-- 🔧 `ISSUE_RESOLUTION.md` - Technical issue details
-- 📊 `DEPLOYMENT_SUMMARY.md` - Quick reference guide
-- ⚙️ `.env.example` - Environment configuration template
-
----
 
 **Status: ✅ FULLY FUNCTIONAL & PRODUCTION READY**
 
