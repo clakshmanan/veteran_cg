@@ -7,4 +7,4 @@ reportlab==4.0.7
 qrcode==7.4.2
 PyYAML==6.0.1
 python-decouple==3.8
-pip install pyotp==2.9.0
+pyotp==2.9.0
