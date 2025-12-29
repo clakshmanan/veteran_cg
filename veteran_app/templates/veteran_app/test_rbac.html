@@ -1,0 +1,49 @@
+{% extends 'veteran_app/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>RBAC Test Page</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>System Stats</h5>
+                    <p>Total Users: {{ user_count }}</p>
+                    <p>Total Roles: {{ role_count }}</p>
+                    <p>Current User: {{ request.user.username }}</p>
+                    <p>Is Superuser: {{ request.user.is_superuser }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Available Roles</h4>
+            <ul class="list-group">
+                {% for role in roles %}
+                <li class="list-group-item">{{ role.name }} - {{ role.description }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="col-md-6">
+            <h4>Sample Users</h4>
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item">
+                    {{ user.username }} 
+                    {% if user.is_superuser %}<span class="badge bg-warning">Superuser</span>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="/rbac/users/" class="btn btn-primary">Go to RBAC Users</a>
+        <a href="/rbac/" class="btn btn-secondary">Go to RBAC Dashboard</a>
+    </div>
+</div>
+{% endblock %}

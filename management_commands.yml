@@ -1,0 +1,256 @@
+# ICGVWA Management Commands Configuration
+# This YAML file contains all management commands for easy deployment and maintenance
+
+project:
+  name: "Indian Coast Guard Veteran Welfare Association"
+  version: "1.0.0"
+  django_version: "5.2.6"
+  python_version: "3.8+"
+
+# Database and Initial Setup Commands
+setup_commands:
+  # Core system setup
+  - name: "migrate_database"
+    command: "python manage.py migrate"
+    description: "Apply all database migrations"
+    required: true
+    order: 1
+    
+  - name: "collect_static"
+    command: "python manage.py collectstatic --noinput"
+    description: "Collect static files for production"
+    required: true
+    order: 2
+    
+  - name: "load_initial_data"
+    command: "python manage.py load_initial_data"
+    description: "Load master data (States, Ranks, Branches, Blood Groups)"
+    required: true
+    order: 3
+    
+  - name: "create_superuser"
+    command: "python manage.py createsuperuser"
+    description: "Create superuser account (interactive)"
+    required: true
+    order: 4
+    interactive: true
+
+# Data Management Commands
+data_commands:
+  # Master data seeding
+  - name: "seed_master_data"
+    command: "python manage.py seed_data"
+    description: "Seed all master data including states, ranks, branches, blood groups"
+    category: "master_data"
+    
+  - name: "seed_state_users"
+    command: "python manage.py seed_state_users"
+    description: "Create state-specific admin users for all states"
+    category: "user_management"
+    
+  - name: "seed_sample_members"
+    command: "python manage.py seed_members"
+    description: "Create sample veteran member records for testing"
+    category: "test_data"
+    
+  - name: "import_members"
+    command: "python manage.py import_members --file <path_to_csv>"
+    description: "Import veteran members from CSV file"
+    category: "data_import"
+    parameters:
+      - name: "file"
+        type: "path"
+        required: true
+        description: "Path to CSV file containing member data"
+
+# User Management Commands
+user_commands:
+  - name: "create_users"
+    command: "python manage.py create_users"
+    description: "Create system users with proper roles"
+    category: "user_management"
+    
+  - name: "create_accounts_user"
+    command: "python manage.py create_accounts_user"
+    description: "Create accounts/treasurer user for financial management"
+    category: "user_management"
+    
+  - name: "setup_state_admin_permissions"
+    command: "python manage.py setup_state_admin_permissions"
+    description: "Setup proper permissions for state administrators"
+    category: "permissions"
+
+# System Maintenance Commands
+maintenance_commands:
+  - name: "clear_data"
+    command: "python manage.py clear_data"
+    description: "Clear all data from database (DANGEROUS - use with caution)"
+    category: "maintenance"
+    dangerous: true
+    
+  - name: "generate_association_numbers"
+    command: "python manage.py generate_association_numbers"
+    description: "Generate association numbers for members without them"
+    category: "maintenance"
+    
+  - name: "fix_state_permissions"
+    command: "python manage.py fix_state_permissions"
+    description: "Fix state-based permissions for users"
+    category: "maintenance"
+    
+  - name: "fix_chat_portal"
+    command: "python manage.py fix_chat_portal"
+    description: "Fix chat portal related issues"
+    category: "maintenance"
+
+# RBAC (Role-Based Access Control) Commands
+rbac_commands:
+  - name: "init_rbac"
+    command: "python manage.py init_rbac"
+    description: "Initialize Role-Based Access Control system"
+    category: "rbac"
+
+# One-time Setup Commands (Run once during deployment)
+one_time_commands:
+  - name: "initial_deployment_setup"
+    description: "Complete initial deployment setup"
+    commands:
+      - "python manage.py migrate"
+      - "python manage.py collectstatic --noinput"
+      - "python manage.py load_initial_data"
+      - "python manage.py seed_data"
+      - "python manage.py create_accounts_user"
+      - "python manage.py init_rbac"
+      - "python manage.py setup_state_admin_permissions"
+    order: "sequential"
+    
+  - name: "production_deployment"
+    description: "Production deployment commands"
+    commands:
+      - "python manage.py migrate"
+      - "python manage.py collectstatic --noinput --clear"
+      - "python manage.py load_initial_data"
+      - "python manage.py generate_association_numbers"
+    order: "sequential"
+
+# Development and Testing Commands
+development_commands:
+  - name: "setup_test_environment"
+    description: "Setup complete test environment with sample data"
+    commands:
+      - "python manage.py migrate"
+      - "python manage.py load_initial_data"
+      - "python manage.py seed_data"
+      - "python manage.py seed_state_users"
+      - "python manage.py seed_members"
+      - "python manage.py create_accounts_user"
+    order: "sequential"
+    
+  - name: "reset_test_data"
+    description: "Reset and reload test data"
+    commands:
+      - "python manage.py clear_data"
+      - "python manage.py migrate"
+      - "python manage.py seed_data"
+      - "python manage.py seed_members"
+    order: "sequential"
+    dangerous: true
+
+# Backup and Restore Commands
+backup_commands:
+  - name: "backup_database"
+    command: "python manage.py dumpdata --natural-foreign --natural-primary > backup_$(date +%Y%m%d_%H%M%S).json"
+    description: "Create database backup"
+    category: "backup"
+    
+  - name: "restore_database"
+    command: "python manage.py loaddata <backup_file>"
+    description: "Restore database from backup"
+    category: "restore"
+    parameters:
+      - name: "backup_file"
+        type: "path"
+        required: true
+        description: "Path to backup JSON file"
+
+# Quick Command Aliases
+aliases:
+  setup: "initial_deployment_setup"
+  deploy: "production_deployment"
+  test: "setup_test_environment"
+  reset: "reset_test_data"
+  backup: "backup_database"
+  
+# Environment-specific configurations
+environments:
+  development:
+    debug: true
+    allowed_hosts: ["localhost", "127.0.0.1"]
+    database: "sqlite3"
+    
+  production:
+    debug: false
+    allowed_hosts: ["icgvwa.org", "www.icgvwa.org"]
+    database: "postgresql"
+    
+  testing:
+    debug: true
+    database: "sqlite3"
+    test_data: true
+
+# Command execution order for different scenarios
+execution_order:
+  fresh_install:
+    - migrate_database
+    - collect_static
+    - load_initial_data
+    - create_superuser
+    - seed_master_data
+    - create_accounts_user
+    - init_rbac
+    - setup_state_admin_permissions
+    
+  update_deployment:
+    - migrate_database
+    - collect_static
+    - generate_association_numbers
+    - fix_state_permissions
+    
+  data_refresh:
+    - clear_data
+    - migrate_database
+    - load_initial_data
+    - seed_master_data
+    - seed_sample_members
+
+# Security and validation
+security:
+  dangerous_commands:
+    - clear_data
+    - reset_test_data
+  confirmation_required: true
+  backup_before_dangerous: true
+
+# Logging configuration
+logging:
+  enabled: true
+  log_file: "management_commands.log"
+  log_level: "INFO"
+  
+# Notes and documentation
+notes:
+  - "Always backup database before running dangerous commands"
+  - "Run commands in the specified order for proper setup"
+  - "Use aliases for common command sequences"
+  - "Check logs for command execution status"
+  - "State users are created with pattern: state_{STATE_CODE}"
+  - "Default accounts user: username='accounts', password='accounts123'"
+  - "Superuser should be created manually for security"
+
+# Quick reference for common tasks
+quick_reference:
+  new_deployment: "Use 'fresh_install' execution order"
+  update_system: "Use 'update_deployment' execution order"
+  add_test_data: "Run seed_sample_members command"
+  fix_permissions: "Run fix_state_permissions command"
+  reset_everything: "Use 'data_refresh' execution order (DANGEROUS)"

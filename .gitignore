@@ -1,0 +1,58 @@
+# Environment Variables (CRITICAL - Never commit)
+.env
+.env.local
+.env.production
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+__pycache__/
+*.egg
+*.egg-info/
+dist/
+build/
+.Python
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+/static_root
+
+# Security
+security.log
+*.pem
+*.key
+*.crt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Sensitive data
+/uploads/
+/documents/
+/resumes/
+/veterans/
+/matrimonial/
+/children/
+/carousel/
+/state_heads/

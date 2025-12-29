@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: icgvwa
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn veteran_project.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: veteran_project.render_settings
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: WEB_CONCURRENCY
+        value: 3
+    
+  - type: postgres
+    name: icgvwa-db
+    databaseName: icgvwa
+    user: icgvwa_user
+    
+databases:
+  - name: icgvwa-db
+    databaseName: icgvwa
+    user: icgvwa_user
