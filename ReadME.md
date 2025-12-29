@@ -33,10 +33,7 @@ A comprehensive Django web application for managing veteran association members 
 5. **Create superuser (already created):**
    ```bash
    python manage.py createsuperuser
-   ```
-   - Username: `admin`
-   - Password: `admin123`
-
+  
 6. **Start the development server:**
    ```bash
    python manage.py runserver
