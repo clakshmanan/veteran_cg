@@ -1,7 +1,7 @@
-Django==4.2.11
+Django==5.2.6
+psycopg2-binary==2.9.9
 gunicorn==21.2.0
 whitenoise==6.6.0
-<<<<<<< HEAD
 Pillow==10.1.0
 reportlab==4.0.7
 qrcode[pil]==7.4.2
@@ -12,16 +12,3 @@ pyotp==2.9.0
 django-extensions==3.2.3
 django-grappelli==3.0.8
 django-jazzmin==2.6.0
-=======
-psycopg2-binary==2.9.10
-dj-database-url==2.1.0
-Pillow==10.2.0
-reportlab==4.1.0
-qrcode[pil]==7.4.2
-PyYAML==6.0.1
-python-decouple==3.8
-pyotp==2.9.0
-django-extensions==3.2.3
-django-grappelli==3.0.8
-django-jazzmin==2.6.0
->>>>>>> 75cb5030a5512704a9e133c817e2b5e1e7a1cfd2
