@@ -5,9 +5,9 @@ from .settings import *
 # Security Settings
 DEBUG = False
 ALLOWED_HOSTS = [
-    'icgvwa.onrender.com',  # Replace with your Render URL
-    'icgvwa.org',           # Your custom domain (if any)
-    'www.icgvwa.org',
+    'veteran_cg.onrender.com',  # Replace with your Render URL
+    'icveteran.in',           # Your custom domain (if any)
+    'www.icgveteran.in',
 ]
 
 # Database Configuration for Render PostgreSQL
